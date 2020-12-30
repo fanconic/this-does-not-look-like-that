@@ -1,6 +1,12 @@
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 
+import sys
+sys.path.insert(0, '.')
+
+from settings import pretrained_model_dir
+
+
 model_urls = {
     'vgg11': 'https://download.pytorch.org/models/vgg11-bbd30ac9.pth',
     'vgg13': 'https://download.pytorch.org/models/vgg13-c768596a.pth',
@@ -12,7 +18,8 @@ model_urls = {
     'vgg19_bn': 'https://download.pytorch.org/models/vgg19_bn-c79401a0.pth',
 }
 
-model_dir = './pretrained_models'
+model_dir = pretrained_model_dir
+
 
 cfg = {
     'A': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],

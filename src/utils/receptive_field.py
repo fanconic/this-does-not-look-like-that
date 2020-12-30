@@ -1,5 +1,6 @@
 import math
 
+
 def compute_layer_rf_info(layer_filter_size, layer_stride, layer_padding,
                           previous_layer_rf_info):
     n_in = previous_layer_rf_info[0] # input size

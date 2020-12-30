@@ -1,22 +1,33 @@
 import os
+import getpass
 
+
+username = getpass.getuser()
 
 base_architecture = 'resnet18'
 img_size = 224
-prototype_shape = (2000, 128, 1, 1)
-num_classes = 200
+if base_architecture in ['resnet34']:
+    num_channels = 256
+else:
+    num_channels = 128
+
+prototype_shape = (20, 128, 1, 1)
+num_classes = 2
 prototype_activation_function = 'log'
 add_on_layers_type = 'regular'
 
-experiment_run = '004'
+experiment_run = '008'
+
 JPEG_QUALITY = 20
 
 
 if 'COLAB_GPU' in os.environ:
     data_path = '/content/PPNet/datasets/cub200_cropped/'
+    pretrained_model_dir = '/content/PPNet/pretrained_models/'
     colab = True
 else:
     data_path = '/scratch/PPNet/datasets/cub200_cropped/'
+    pretrained_model_dir = '/cluster/scratch/{}/PPNet/pretrained_models/'.format(username)
     colab = False
 
 train_dir = data_path + 'train_cropped_augmented/'
@@ -43,8 +54,8 @@ coefs = {
     'l1': 1e-4,
 }
 
-num_train_epochs = 40
-num_warm_epochs = 5
+num_train_epochs = 1
+num_warm_epochs = 0
 
 push_start = 10
 push_epochs = [i for i in range(num_train_epochs) if i % 10 == 0]

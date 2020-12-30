@@ -1,11 +1,14 @@
 import os
+import sys
+sys.path.insert(0, '.')
+
 import numpy as np
 import pandas as pd
 import cv2
 from matplotlib import pyplot as plt
 
 from tqdm import tqdm
-from settings import colab, num_classes
+from settings import colab, num_classes, username
 
 
 def setup_test_image(idx):
@@ -13,7 +16,7 @@ def setup_test_image(idx):
         DIR = '/content/'
         OUT = '/content/PPNet/'
     else:
-        DIR = '/cluster/scratch/rarade/PPNet/'
+        DIR = '/cluster/scratch/{}/PPNet/'.format(username)
         OUT = '/scratch/PPNet/'
 
     train_test_split = pd.read_csv(DIR+'CUB_200_2011/train_test_split.txt', sep=' ', header=None)
@@ -59,7 +62,7 @@ def setup_data(num_classes=200):
         DIR = '/content/'
         OUT = '/content/PPNet/'
     else:
-        DIR = '/cluster/scratch/rarade/PPNet/'
+        DIR = '/cluster/scratch/{}/PPNet/'.format(username)
         OUT = '/scratch/PPNet/'
 
     train_test_split = pd.read_csv(DIR+'CUB_200_2011/train_test_split.txt', sep=' ', header=None)

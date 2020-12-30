@@ -10,8 +10,9 @@ import time
 
 import cv2
 
-from receptive_field import compute_rf_prototype
-from helpers import makedir, find_high_activation_crop
+from src.utils.receptive_field import compute_rf_prototype
+from src.utils.helpers import makedir, find_high_activation_crop
+
 
 def imsave_with_bbox(fname, img_rgb, bbox_height_start, bbox_height_end,
                      bbox_width_start, bbox_width_end, color=(0, 255, 255)):

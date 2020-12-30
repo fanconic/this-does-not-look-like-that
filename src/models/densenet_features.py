@@ -5,6 +5,11 @@ import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 from collections import OrderedDict
 
+import sys
+sys.path.insert(0, '.')
+
+from settings import pretrained_model_dir
+
 
 model_urls = {
     'densenet121': 'https://download.pytorch.org/models/densenet121-a639ec97.pth',
@@ -12,7 +17,8 @@ model_urls = {
     'densenet201': 'https://download.pytorch.org/models/densenet201-c1103571.pth',
     'densenet161': 'https://download.pytorch.org/models/densenet161-8d451a50.pth',
 }
-model_dir = './pretrained_models'
+
+model_dir = pretrained_model_dir
 
 
 class _DenseLayer(nn.Sequential):

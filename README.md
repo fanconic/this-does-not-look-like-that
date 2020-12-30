@@ -16,3 +16,10 @@ Group Project for the Deep Learning Lecture in Fall 2020 at ETH Zürich
 - `img_aug.py`: Augemtation.
 - `main.py`: Training.
 - `settings.py`: Settings, paths and configuration.
+
+
+CUB-200-2011 can be downloaded from:
+http://www.vision.caltech.edu/visipedia/CUB-200-2011.html
+
+Stanford Cars can be downloaded from:
+https://ai.stanford.edu/~jkrause/cars/car_dataset.html

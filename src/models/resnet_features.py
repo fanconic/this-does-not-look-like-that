@@ -2,6 +2,12 @@ import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 
+import sys
+sys.path.insert(0, '.')
+
+from settings import pretrained_model_dir
+
+
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
     'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
@@ -10,7 +16,8 @@ model_urls = {
     'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
 }
 
-model_dir = './pretrained_models'
+model_dir = pretrained_model_dir
+
 
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""

@@ -1,4 +1,5 @@
 import os
+
 def create_logger(log_filename, display=True):
     f = open(log_filename, 'a')
     counter = [0]

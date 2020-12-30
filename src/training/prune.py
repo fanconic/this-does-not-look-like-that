@@ -4,8 +4,9 @@ from collections import Counter
 import numpy as np
 import torch
 
-from helpers import makedir
-import find_nearest
+from src.utils.helpers import makedir
+from src.utils import find_nearest
+
 
 def prune_prototypes(dataloader,
                      prototype_network_parallel,
