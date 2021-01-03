@@ -1,3 +1,5 @@
+# Setup the training and testing data.
+
 import os
 import sys
 sys.path.insert(0, '.')
@@ -12,6 +14,11 @@ from settings import colab, num_classes, username
 
 
 def setup_test_image(idx):
+    """
+    Setup a single test image for inference.
+    Args:
+        idx (int): Index of the test image.
+    """
     if colab:
         DIR = '/content/'
         OUT = '/content/PPNet/'
@@ -57,6 +64,11 @@ def setup_test_image(idx):
 
     
 def setup_data(num_classes=200):
+    """
+    Setup training and testing data.
+    Args:
+        num_classes (int): Number of classes to use (max: 200).
+    """
     print ('No. of classes used: ', num_classes)
     if colab:
         DIR = '/content/'

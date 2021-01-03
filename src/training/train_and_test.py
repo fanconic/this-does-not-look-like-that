@@ -1,3 +1,5 @@
+# Helper function for training and testing.
+
 import time
 import torch
 
@@ -6,11 +8,15 @@ from src.utils.helpers import list_of_distances, make_one_hot
 
 def _train_or_test(model, dataloader, optimizer=None, class_specific=True, use_l1_mask=True,
                    coefs=None, log=print):
-    '''
-    model: the multi-gpu model
-    dataloader:
-    optimizer: if None, will be test evaluation
-    '''
+    """
+    Train or test.
+    Args:
+        model: the multi-gpu model.
+        dataloader: train or test dataloader.
+        optimizer: if None, will be test evaluation.
+    Returns:
+        accuracy of the given model.
+    """
     is_train = optimizer is not None
     start = time.time()
     n_examples = 0

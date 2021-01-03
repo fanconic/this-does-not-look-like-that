@@ -23,7 +23,7 @@ $ conda install --file requirements.txt
 
 Download the CUB-200-2011 dataset from http://www.vision.caltech.edu/visipedia/CUB-200-2011.html and extract the files in a suitable folder.
 
-## Repository Structure
+### Repository Structure
 
 - `run_training.sh`: Train ProtoPNet on CUB-200-2011 dataset.
 - `run_jpeg_training.sh`: Train ProtoPNet on altered CUB-200-2011 dataset.
@@ -31,7 +31,7 @@ Download the CUB-200-2011 dataset from http://www.vision.caltech.edu/visipedia/C
 - `JPEG_experiment_analysis`: JPEG Experiment.
 - `local_analysis_attack3.ipynb`: Attack 2 (Make head disappear).
 
-### Training ProtoPNets
+## Training ProtoPNets
 
 Please set the variable `base_architecture` in [`settings.py`](settings.py) to the backbone which you want to use for the ProtoPNet. Also, set the path to the downloaded dataset in [`src/data/setup.py`](src/data/setup.py).
 

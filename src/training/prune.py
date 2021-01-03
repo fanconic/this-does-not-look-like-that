@@ -1,3 +1,5 @@
+# Prune the prototype layer.
+
 import os
 import shutil
 from collections import Counter

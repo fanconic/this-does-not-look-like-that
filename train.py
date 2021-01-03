@@ -1,3 +1,6 @@
+# Train ProtoPNets on normal CUB-200-2011 dataset.
+# Used for the Head-On-Stomach Experiment.
+
 import os
 import shutil
 
@@ -64,6 +67,7 @@ from settings import train_dir, test_dir, train_push_dir, \
 normalize = transforms.Normalize(mean=mean, std=std)
 
 # all datasets
+
 # train set
 train_dataset = datasets.ImageFolder(
     train_dir,

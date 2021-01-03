@@ -1,3 +1,5 @@
+# ProtoPNet model definition.
+
 import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
@@ -33,12 +35,14 @@ base_architecture_to_features = {'resnet18': resnet18_features,
                                  'vgg19_bn': vgg19_bn_features}
 
 class PPNet(nn.Module):
-
+    
     def __init__(self, features, img_size, prototype_shape,
                  proto_layer_rf_info, num_classes, init_weights=True,
                  prototype_activation_function='log',
                  add_on_layers_type='bottleneck'):
-
+        """
+        Construct a ProtoPNet.
+        """
         super(PPNet, self).__init__()
         self.img_size = img_size
         self.prototype_shape = prototype_shape
@@ -293,6 +297,19 @@ def construct_PPNet(base_architecture, pretrained=True, img_size=224,
                     prototype_shape=(2000, 512, 1, 1), num_classes=200,
                     prototype_activation_function='log',
                     add_on_layers_type='bottleneck'):
+    """Construct a ProtoPNet.
+    Args:
+        base_architecture (str): name of the convolutional backbone.
+        pretrained (bool): whether to use pretrained weights for the convolutional backbone (default: true).
+        img_size (int): image size (default: 224).
+        prototype_shape (tuple): prototype shape (default: (2000, 512, 1, 1)).
+        num_classes (int): number of classes in the dataset (default: 200).
+        prototype_activation_function: prototype activation function (default: log).
+        add_on_layers_type: type of add on layers (default: bottleneck).
+    Returns:
+        torch.nn.Module: ProtoPNet.
+    """
+    
     features = base_architecture_to_features[base_architecture](pretrained=pretrained)
     layer_filter_sizes, layer_strides, layer_paddings = features.conv_info()
     proto_layer_rf_info = compute_proto_layer_rf_info_v2(img_size=img_size,

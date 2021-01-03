@@ -1,3 +1,7 @@
+# Functions for performing local_analysis.
+# Used for running our experiments.
+
+
 import torch
 import torchvision.transforms as transforms
 from torch.autograd import Variable
@@ -76,8 +80,16 @@ def imsave_with_bbox(fname, img_rgb, bbox_height_start, bbox_height_end,
 
 
 class LocalAnalysis(object):
-    def __init__(self, load_model_dir, load_model_name, test_image_name, image_save_directory = None, attack=None):
-        model_base_architecture = load_model_dir.split('/')[-3]
+    def __init__(self, load_model_dir, load_model_name, test_image_name, image_save_directory=None, attack=None):
+        '''
+        Perform local analysis.
+        Arguments:
+            load_model_dir (str): path to saved model directory.
+            load_model_name (str): saved model name.
+            test_image_name (str): test image file name.
+            image_save_directory (str): directory to save images.
+            attack (int): type of attack (1 or 3 or None).
+        '''
         experiment_run = load_model_dir.split('/')[-2]
         
         
@@ -277,6 +289,8 @@ class LocalAnalysis(object):
                                       similarity with patch.
             i (int): index of the prototype for which we want to maximize the similarity.
             idx (int): image id in the batch (default: 0)
+        Returns:
+            Perturbed Image, Perturbation.
         '''
         pid = i # index of the prototype for which we want to maximize the similarity.
         idx = idx # image index
@@ -329,6 +343,8 @@ class LocalAnalysis(object):
             i (int): rank of prototype to attack (in decreasing order of similarity e.g. most similar = 1).
             pid (int): prototype id to attack (optional).
             idx (int): image id in the batch (default: 0)
+        Returns:
+            Perturbed Image, Perturbation.
         '''
         i = i # rank of prototype to attack (in decreasing order of similarity e.g. most similar = 1)
         idx = idx # image index

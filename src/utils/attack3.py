@@ -1,3 +1,6 @@
+# Attack 3 Implementation.
+# Used for Make-Head-Disappear Experiment.
+
 import torch
 
 import numpy as np
@@ -6,6 +9,9 @@ from src.utils.helpers import find_high_activation_crop, get_all_xy
 
 
 def similarity_score(ppnet_multi, ppnet, preprocess_fn, x, pid=1):
+    '''
+    Forward propagate through ProtoPNet and return the required objective function to minimize.
+    '''
     x = preprocess_fn(x.squeeze(0)).unsqueeze(0)
     logits, min_distances = ppnet_multi(x)
     conv_output, distances = ppnet.push_forward(x)
@@ -21,7 +27,9 @@ def similarity_score(ppnet_multi, ppnet, preprocess_fn, x, pid=1):
 
 def pgd(x, mask, pid, net_multi, net, preprocess_fn, attack_steps=40, attack_lr=2/255, attack_eps=8/255, 
         random_init=True, minimize=True, clip_min=0.0, clip_max=1.0):
-    
+    '''
+    Perform PGD to minimize similarty of a prototype wrt to given image patch.
+    '''
     x_adv = x.clone()
     if random_init:
         x_adv = torch.clamp(x_adv + torch.empty_like(x).uniform_(-attack_eps, attack_eps), clip_min, clip_max) 

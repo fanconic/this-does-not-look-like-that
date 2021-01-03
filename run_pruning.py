@@ -1,3 +1,5 @@
+# Prune the number of prototypes used.
+
 import os
 import shutil
 
@@ -23,6 +25,7 @@ parser.add_argument('-modeldir', nargs=1, type=str)
 parser.add_argument('-model', nargs=1, type=str)
 args = parser.parse_args()
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpuid[0]
+
 
 
 optimize_last_layer = True
@@ -57,6 +60,8 @@ ppnet = torch.load(original_model_dir + original_model_name)
 ppnet = ppnet.cuda()
 ppnet_multi = torch.nn.DataParallel(ppnet)
 class_specific = True
+
+
 
 # load the data
 from settings import train_dir, test_dir, train_push_dir
@@ -113,6 +118,8 @@ log('push set size: {0}'.format(len(train_push_loader.dataset)))
 tnt.test(model=ppnet_multi, dataloader=test_loader,
          class_specific=class_specific, log=log)
 
+
+
 # prune prototypes
 log('prune')
 prune.prune_prototypes(dataloader=train_push_loader,
@@ -131,6 +138,8 @@ save.save_model_w_condition(model=ppnet, model_dir=model_dir,
                             model_name=original_model_name.split('push')[0] + 'prune',
                             accu=accu,
                             target_accu=0.70, log=log)
+
+
 
 # last layer optimization
 if optimize_last_layer:

@@ -1,3 +1,5 @@
+# Perform offline data augmentation for training data.
+
 import Augmentor
 
 import os
@@ -15,14 +17,17 @@ def enable_print():
 
 
 def makedir(path):
-    '''
+    """
     if path does not exist in the file system, create it
-    '''
+    """
     if not os.path.exists(path):
         os.makedirs(path)
 
 
 def augment():        
+    """
+    Perform 40x data augmentation for each training image.
+    """
     datasets_root_dir = data_path
     dir = datasets_root_dir + 'train_cropped/'
     target_dir = datasets_root_dir + 'train_cropped_augmented/'

@@ -1,3 +1,5 @@
+# Find nearest image patches to given image.
+
 import torch
 import numpy as np
 

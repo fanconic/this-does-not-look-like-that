@@ -1,3 +1,5 @@
+# Computing receptive field of a downstream unit.
+
 import math
 
 

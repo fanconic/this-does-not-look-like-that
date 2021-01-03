@@ -1,22 +1,24 @@
+# Configuration for training ProtoPNets.
+
 import os
 import getpass
 
 
 username = getpass.getuser()
 
-base_architecture = 'resnet18'
+base_architecture = 'vgg19_bn'
 img_size = 224
 if base_architecture in ['resnet34']:
     num_channels = 256
 else:
     num_channels = 128
 
-prototype_shape = (20, 128, 1, 1)
-num_classes = 2
+prototype_shape = (2000, 128, 1, 1)
+num_classes = 200
 prototype_activation_function = 'log'
 add_on_layers_type = 'regular'
 
-experiment_run = '008'
+experiment_run = '005'
 
 JPEG_QUALITY = 20
 
@@ -54,8 +56,8 @@ coefs = {
     'l1': 1e-4,
 }
 
-num_train_epochs = 1
-num_warm_epochs = 0
+num_train_epochs = 11
+num_warm_epochs = 5
 
 push_start = 10
 push_epochs = [i for i in range(num_train_epochs) if i % 10 == 0]

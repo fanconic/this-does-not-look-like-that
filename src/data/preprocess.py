@@ -1,3 +1,5 @@
+# Helper functions for preprocessing images.
+
 import torch
 
 

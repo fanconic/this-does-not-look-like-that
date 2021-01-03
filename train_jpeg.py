@@ -1,3 +1,6 @@
+# Train ProtoPNets on altered CUB-200-2011 dataset.
+# Used for the JPEG Experiment.
+
 import os
 import shutil
 from io import BytesIO
@@ -80,6 +83,7 @@ def JPEGcompression(image):
 normalize = transforms.Normalize(mean=mean, std=std)
 
 # all datasets
+
 # train set
 train_dataset = CustomImageFolder(
     train_dir,

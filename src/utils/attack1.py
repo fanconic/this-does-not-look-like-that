@@ -1,3 +1,6 @@
+# Attack 1 Implementation.
+# Used for Head-On-Stomach Experiment.
+
 import torch
 
 import numpy as np
@@ -8,6 +11,9 @@ from src.utils.helpers import find_high_activation_crop, get_all_xy
 
 
 def similarity_score(ppnet_multi, ppnet, preprocess_fn, x, pid=1, loc=None, act_loc=None):
+    '''
+    Forward propagate through ProtoPNet and return the required objective function to maximize.
+    '''
     assert loc != None, 'please provide the locations in feature map as a list of dict (x, y)'
     mask, loc = get_all_xy(loc)
     
@@ -42,7 +48,9 @@ def similarity_score(ppnet_multi, ppnet, preprocess_fn, x, pid=1, loc=None, act_
 
 def pgd(x, mask, pid, loc, net_multi, net, preprocess_fn, attack_steps=40, attack_lr=2/255, attack_eps=8/255, 
         random_init=True, minimize=False, clip_min=0.0, clip_max=1.0, idx=0, grid=7):
-    
+    '''
+    Perform PGD to maximize similarty of a prototype wrt to given image patch.
+    '''
     img_size = net_multi.module.img_size
     x_adv = x.clone()
     if random_init:

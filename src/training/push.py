@@ -1,3 +1,5 @@
+# Push prototypes to the nearest training image patches.
+
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
