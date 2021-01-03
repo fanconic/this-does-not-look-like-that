@@ -1,4 +1,4 @@
-# *This does not look like That*: Evaluating the Interpretability of Deep Models
+# *This Does Not Look Like That*: Evaluating the Interpretability of Deep Models
 
 Group Project for the "Deep Learning" Lecture in Fall 2020 at ETH Zürich.
 
@@ -62,7 +62,7 @@ Download the dataset and model weights from here:
 
 Finally, follow the instructions in the provided notebooks to reproduce our experiments.
 - [`local_analysis_attack1.ipynb`](local_analysis_attack1.ipynb): Head-On-Stomach Experiment.
-- [`JPEG_experiment_analysis`](JPEG_experiment_analysis): JPEG Experiment.
+- [`JPEG_experiment_analysis.ipynb`](JPEG_experiment_analysis.ipynb): JPEG Experiment.
 
 
 ## Contributors

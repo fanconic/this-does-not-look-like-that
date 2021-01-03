@@ -6,7 +6,7 @@ import getpass
 
 username = getpass.getuser()
 
-base_architecture = 'vgg19_bn'
+base_architecture = 'resnet18'
 img_size = 224
 if base_architecture in ['resnet34']:
     num_channels = 256
