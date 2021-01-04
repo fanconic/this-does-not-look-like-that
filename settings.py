@@ -13,7 +13,7 @@ if base_architecture in ['resnet34']:
 else:
     num_channels = 128
 
-prototype_shape = (2000, 128, 1, 1)
+prototype_shape = (2000, num_channels, 1, 1)
 num_classes = 200
 prototype_activation_function = 'log'
 add_on_layers_type = 'regular'
