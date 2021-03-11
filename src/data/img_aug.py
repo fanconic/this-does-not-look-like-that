@@ -4,13 +4,15 @@ import Augmentor
 
 import os
 import sys
-sys.path.insert(0, '.')
+
+sys.path.insert(0, ".")
 
 from settings import data_path, username
 
 
 def disable_print():
-    sys.stdout = open(os.devnull, 'w')
+    sys.stdout = open(os.devnull, "w")
+
 
 def enable_print():
     sys.stdout = sys.__stdout__
@@ -24,20 +26,22 @@ def makedir(path):
         os.makedirs(path)
 
 
-def augment():        
+def augment():
     """
     Perform 40x data augmentation for each training image.
     """
     datasets_root_dir = data_path
-    dir = datasets_root_dir + 'train_cropped/'
-    target_dir = datasets_root_dir + 'train_cropped_augmented/'
+    dir = datasets_root_dir + "train_cropped/"
+    target_dir = datasets_root_dir + "train_cropped_augmented/"
 
     makedir(target_dir)
     folders = [os.path.join(dir, folder) for folder in next(os.walk(dir))[1]]
-    target_folders = [os.path.join(target_dir, folder) for folder in next(os.walk(dir))[1]]
-    
+    target_folders = [
+        os.path.join(target_dir, folder) for folder in next(os.walk(dir))[1]
+    ]
+
     disable_print()
-    
+
     for i in range(len(folders)):
         fd = folders[i]
         tfd = target_folders[i]
@@ -69,9 +73,9 @@ def augment():
         for i in range(10):
             p.process()
         del p
-    
-    enable_print()
-    
 
-if __name__ == '__main__':
+    enable_print()
+
+
+if __name__ == "__main__":
     augment()
