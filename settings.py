@@ -18,7 +18,7 @@ num_classes = 200
 prototype_activation_function = "log"
 add_on_layers_type = "regular"
 
-experiment_run = '010'
+experiment_run = "010"
 
 JPEG_QUALITY = 20
 
