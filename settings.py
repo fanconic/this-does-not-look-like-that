@@ -6,7 +6,7 @@ import getpass
 
 username = getpass.getuser()
 
-base_architecture = 'resnet18'
+base_architecture = 'vgg19'
 img_size = 224
 if base_architecture in ['resnet34']:
     num_channels = 256
@@ -18,7 +18,7 @@ num_classes = 200
 prototype_activation_function = 'log'
 add_on_layers_type = 'regular'
 
-experiment_run = '005'
+experiment_run = '010'
 
 JPEG_QUALITY = 20
 
