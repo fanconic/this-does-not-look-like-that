@@ -36,7 +36,7 @@ from settings import colab, username
 ##### HELPER FUNCTIONS FOR PLOTTING
 
 
-def save_preprocessed_img(fname, preprocessed_imgs, index=0):
+def save_preprocessed_img(fname, preprocessed_imgs, index=0, save=False):
     img_copy = copy.deepcopy(preprocessed_imgs[index : index + 1])
     undo_preprocessed_img = undo_preprocess_input_function(img_copy)
     print("image index {0} in batch".format(index))
@@ -44,22 +44,25 @@ def save_preprocessed_img(fname, preprocessed_imgs, index=0):
     undo_preprocessed_img = undo_preprocessed_img.detach().cpu().numpy()
     undo_preprocessed_img = np.transpose(undo_preprocessed_img, [1, 2, 0])
 
-    # plt.imsave(fname, undo_preprocessed_img)
+    if save:
+        plt.imsave(fname, undo_preprocessed_img)
     return undo_preprocessed_img
 
 
-def save_prototype(load_img_dir, fname, epoch, index):
+def save_prototype(load_img_dir, fname, epoch, index, save=False):
     p_img = plt.imread(
         os.path.join(
             load_img_dir, "epoch-" + str(epoch), "prototype-img" + str(index) + ".png"
         )
     )
-    # plt.axis('off')
-    # plt.imsave(fname, p_img)
+
+    if save:
+        plt.axis("off")
+        plt.imsave(fname, p_img)
     return p_img
 
 
-def save_prototype_self_activation(load_img_dir, fname, epoch, index):
+def save_prototype_self_activation(load_img_dir, fname, epoch, index, save=False):
     p_img = plt.imread(
         os.path.join(
             load_img_dir,
@@ -67,8 +70,10 @@ def save_prototype_self_activation(load_img_dir, fname, epoch, index):
             "prototype-img-original_with_self_act" + str(index) + ".png",
         )
     )
-    # plt.axis('off')
-    # plt.imsave(fname, p_img)
+
+    if save:
+        plt.axis("off")
+        plt.imsave(fname, p_img)
     return p_img
 
 
@@ -82,6 +87,7 @@ def save_prototype_original_img_with_bbox(
     bbox_width_start,
     bbox_width_end,
     color=(0, 255, 255),
+    save=False,
 ):
     p_img_bgr = cv2.imread(
         os.path.join(
@@ -99,9 +105,11 @@ def save_prototype_original_img_with_bbox(
     )
     p_img_rgb = p_img_bgr[..., ::-1]
     p_img_rgb = np.float32(p_img_rgb) / 255
-    # plt.imshow(p_img_rgb)
-    # plt.axis('off')
-    # plt.imsave(fname, p_img_rgb)
+
+    if save:
+        plt.imshow(p_img_rgb)
+        plt.axis("off")
+        plt.imsave(fname, p_img_rgb)
     return p_img_rgb
 
 
@@ -113,6 +121,7 @@ def imsave_with_bbox(
     bbox_width_start,
     bbox_width_end,
     color=(0, 255, 255),
+    save=False,
 ):
     img_bgr_uint8 = cv2.cvtColor(np.uint8(255 * img_rgb), cv2.COLOR_RGB2BGR)
     cv2.rectangle(
@@ -124,9 +133,11 @@ def imsave_with_bbox(
     )
     img_rgb_uint8 = img_bgr_uint8[..., ::-1]
     img_rgb_float = np.float32(img_rgb_uint8) / 255
-    # plt.imshow(img_rgb_float)
-    # plt.axis('off')
-    # plt.imsave(fname, img_rgb_float)
+
+    if save:
+        plt.imshow(img_rgb_float)
+        plt.axis("off")
+        plt.imsave(fname, img_rgb_float)
     return img_rgb_float
 
 
@@ -148,6 +159,7 @@ class LocalAnalysis(object):
             image_save_directory (str): directory to save images.
             attack (int): type of attack (1 or 3 or None).
         """
+        model_base_architecture = load_model_dir.split("/")[-3]
         experiment_run = load_model_dir.split("/")[-2]
 
         self.save_analysis_path = (
@@ -464,7 +476,7 @@ class LocalAnalysis(object):
             ],
         )
 
-    def attack1(self, img_variable, loc, other_loc=None, i=1, idx=0):
+    def attack1(self, img_variable, loc, other_loc=None, i=1, idx=0, show_images=True):
         """
         Perform attack 1 (e.g. make head appear at the stomach).
         Arguments:
@@ -553,11 +565,12 @@ class LocalAnalysis(object):
                 )
             )
 
-        visualize_image_grid(
-            torch2numpy,
-            images=[images_test_unprocessed, images_perturbed, pert * 127 + 0.5],
-            titles=["Original Image", "Perturbed Image", "Perturbation"],
-        )
+        if show_images:
+            visualize_image_grid(
+                torch2numpy,
+                images=[images_test_unprocessed, images_perturbed, pert * 127 + 0.5],
+                titles=["Original Image", "Perturbed Image", "Perturbation"],
+            )
         return images_perturbed, pert
 
     def attack3(self, img_variable, i=1, pid=None, idx=0):
@@ -918,6 +931,320 @@ class LocalAnalysis(object):
             display_titles += [x + "\n(uncompressed)" for x in display_titles]
 
             visualize_image_grid(images=display_images, titles=display_titles, ncols=8)
+            plt.tight_layout()
+            plt.show()
+
+        return display_images
+
+    def jpeg_visualization2(
+        self,
+        pil_img,
+        img_name,
+        test_image_label,
+        preprocess_clean,
+        preprocess_compressed,
+        show_images=False,
+        idx=0,
+        max_prototypes=5,
+        top_n=None,
+    ):
+        """
+        Perform detailed local analysis comparing compressed and uncompressed images.
+        Args:
+            pil_img: is the PIL test image which is to be inspected
+            img_name: name of the image to save it
+            test_image_label: label of the test image
+            preprocess_clean: first torch vision transform pipeline (here, without compression)
+            preprocess_compressed: second torch vision transform pipeline (here, with compression)
+            show_images (default = False): Boolean value to show images
+            idx (default = 0): Index Value, when retrieving results of the PPNet
+            max_prototypes (int): number of most similar prototypes to display (default: 5)
+            top_n (default = None): Visualize the top_n_th most activating prototype
+        Returns:
+            A list containing 8 images in the following order:
+                1. Full picture of most activated prototype with bounding box
+                2. Most activated prototype of compressed image
+                3. Compressed image passed through, with activated patch in bounding box
+                4. Corresponding activation map of the compressed image
+
+                5. Full picture of most activated prototype with bounding box
+                6. Most activated prototype of compressed image
+                7. Uncompressed image passed through, with activated patch in bounding box
+                8. Corresponding activation map of the uncompressed image
+        """
+        # How to save the images
+        specific_folder = self.save_analysis_path + "/" + img_name
+        makedir(specific_folder)
+
+        # Preprocess Clean image
+        img_tensor_clean = preprocess_clean(pil_img)
+        img_variable_clean = Variable(img_tensor_clean.unsqueeze(0))
+
+        # Preprocess compressed image
+        img_tensor_compressed = preprocess_compressed(pil_img)
+        img_variable_compressed = Variable(img_tensor_compressed.unsqueeze(0))
+
+        img_variables = [img_variable_compressed, img_variable_clean]
+
+        # Save activations
+        dict_prototype_activations, dict_tables = {}, {}
+        dict_prototype_activation_patterns = {}
+        dict_array_act, dict_sorted_indices_act = {}, {}
+        dict_original_img = {}
+
+        for k, img_variable in enumerate(img_variables):
+
+            # Forward the image variable through the network
+            images_test = img_variable.cuda()
+            labels_test = torch.tensor([test_image_label])
+
+            logits, min_distances = self.ppnet_multi(images_test)
+            conv_output, distances = self.ppnet.push_forward(images_test)
+            prototype_activations = self.ppnet.distance_2_similarity(min_distances)
+            prototype_activation_patterns = self.ppnet.distance_2_similarity(distances)
+            if self.ppnet.prototype_activation_function == "linear":
+                prototype_activations = prototype_activations + max_dist
+                prototype_activation_patterns = prototype_activation_patterns + max_dist
+
+            tables = []
+            for i in range(logits.size(0)):
+                tables.append(
+                    (torch.argmax(logits, dim=1)[i].item(), labels_test[i].item())
+                )
+
+            idx = idx
+            predicted_cls = tables[idx][0]
+            correct_cls = tables[idx][1]
+            self.log("Uncompressed image" if k == 1 else "JPEG compressed image")
+            if predicted_cls == correct_cls:
+                pred_text = "Prediction is correct."
+            else:
+                pred_text = "Prediction is wrong."
+            self.log(
+                "Predicted: "
+                + str(predicted_cls)
+                + "\t Actual: "
+                + str(correct_cls)
+                + "\t "
+                + pred_text
+            )
+            self.log("------------------------------")
+
+            dict_original_img[k] = save_preprocessed_img(
+                os.path.join(specific_folder, "original_img.png"), images_test, idx
+            )
+
+            ##### MOST ACTIVATED (NEAREST) PROTOTYPES OF THIS IMAGE
+            makedir(os.path.join(specific_folder, "most_activated_prototypes"))
+            dict_prototype_activations[k], dict_tables[k] = (
+                prototype_activations,
+                tables,
+            )
+            dict_prototype_activation_patterns[k] = prototype_activation_patterns
+            dict_array_act[k], dict_sorted_indices_act[k] = torch.sort(
+                prototype_activations[idx]
+            )
+
+        # Initialize as none, and will be filled after examining the first image
+        inspected_index = None
+        inspected_min = None
+        inspected_max = None
+
+        logs = {0: [], 1: []}
+        display_images = []
+        for i in range(1, max_prototypes + 1):
+            if top_n is not None and top_n != i:
+                continue
+
+            for k in [0, 1]:
+                if top_n is not None:
+                    if inspected_index is None:
+                        inspected_index = dict_sorted_indices_act[k][-i].item()
+                    else:
+                        i = np.where(
+                            dict_sorted_indices_act[k].cpu().numpy() == inspected_index
+                        )[0][0]
+                else:
+                    inspected_index, inspected_min, inspected_max = None, None, None
+                    inspected_index = dict_sorted_indices_act[k][-i].item()
+
+                p_img = save_prototype(
+                    self.load_img_dir,
+                    os.path.join(
+                        self.save_analysis_path,
+                        "most_activated_prototypes",
+                        "top-%d_activated_prototype.png" % i,
+                    ),
+                    self.start_epoch_number,
+                    inspected_index,
+                )
+
+                p_oimg_with_bbox = save_prototype_original_img_with_bbox(
+                    self.load_img_dir,
+                    fname=os.path.join(
+                        self.save_analysis_path,
+                        "most_activated_prototypes",
+                        "top-%d_activated_prototype_in_original_pimg.png" % i,
+                    ),
+                    epoch=self.start_epoch_number,
+                    index=inspected_index,
+                    bbox_height_start=self.prototype_info[inspected_index][1],
+                    bbox_height_end=self.prototype_info[inspected_index][2],
+                    bbox_width_start=self.prototype_info[inspected_index][3],
+                    bbox_width_end=self.prototype_info[inspected_index][4],
+                    color=(0, 255, 255),
+                )
+                p_img_with_self_actn = save_prototype_self_activation(
+                    self.load_img_dir,
+                    os.path.join(
+                        self.save_analysis_path,
+                        "most_activated_prototypes",
+                        "top-%d_activated_prototype_self_act.png" % i,
+                    ),
+                    self.start_epoch_number,
+                    inspected_index,
+                )
+
+                activation_pattern = (
+                    dict_prototype_activation_patterns[k][idx][inspected_index]
+                    .detach()
+                    .cpu()
+                    .numpy()
+                )
+                upsampled_activation_pattern = cv2.resize(
+                    activation_pattern,
+                    dsize=(self.img_size, self.img_size),
+                    interpolation=cv2.INTER_CUBIC,
+                )
+
+                # show the most highly activated patch of the image by this prototype
+                high_act_patch_indices = find_high_activation_crop(
+                    upsampled_activation_pattern
+                )
+                high_act_patch = dict_original_img[k][
+                    high_act_patch_indices[0] : high_act_patch_indices[1],
+                    high_act_patch_indices[2] : high_act_patch_indices[3],
+                    :,
+                ]
+
+                plt.imsave(
+                    os.path.join(
+                        specific_folder,
+                        "most_activated_prototypes",
+                        "most_highly_activated_patch_by_top-%d_prototype.png" % i,
+                    ),
+                    high_act_patch,
+                )
+
+                p_img_with_bbox = imsave_with_bbox(
+                    fname=os.path.join(
+                        specific_folder,
+                        "most_activated_prototypes",
+                        "most_highly_activated_patch_in_original_img_by_top-%d_prototype.png"
+                        % i,
+                    ),
+                    img_rgb=dict_original_img[k],
+                    bbox_height_start=high_act_patch_indices[0],
+                    bbox_height_end=high_act_patch_indices[1],
+                    bbox_width_start=high_act_patch_indices[2],
+                    bbox_width_end=high_act_patch_indices[3],
+                    color=(0, 255, 255),
+                )
+
+                # show the image overlayed with prototype activation map and use normalization values of first run
+                if inspected_min is None:
+                    inspected_min = np.amin(upsampled_activation_pattern)
+
+                rescaled_activation_pattern = (
+                    upsampled_activation_pattern - inspected_min
+                )
+
+                if inspected_max is None:
+                    inspected_max = np.amax(rescaled_activation_pattern)
+
+                rescaled_activation_pattern = (
+                    rescaled_activation_pattern / inspected_max
+                )
+                heatmap = cv2.applyColorMap(
+                    np.uint8(255 * rescaled_activation_pattern), cv2.COLORMAP_JET
+                )
+                heatmap = np.float32(heatmap) / 255
+                heatmap = heatmap[..., ::-1]
+                overlayed_img = 0.5 * dict_original_img[k] + 0.3 * heatmap
+
+                plt.imsave(
+                    os.path.join(
+                        specific_folder,
+                        "most_activated_prototypes",
+                        "prototype_activation_map_by_top-%d_prototype.png" % i,
+                    ),
+                    overlayed_img,
+                )
+
+                display_images += [
+                    p_oimg_with_bbox,
+                    p_img,
+                    p_img_with_bbox,
+                    overlayed_img,
+                ]
+                logs[k].append(
+                    {
+                        "Prototype Id": inspected_index,
+                        "Rank": i,
+                        "Prototype Class": self.prototype_img_identity[inspected_index],
+                        "Similarity Score": dict_prototype_activations[k][idx][
+                            inspected_index
+                        ].item(),
+                    }
+                )
+
+        # Visualize Logs and Images
+        if show_images:
+            logs_df = pd.concat(
+                [pd.DataFrame(logs[0]), pd.DataFrame(logs[1])],
+                axis=1,
+                keys=["Compressed Image", "Clean Image"],
+            )
+            display(logs_df)
+
+            display_titles = [
+                "Training Image from which \nprototype is taken",
+                "Prototype",
+                "Test Image + BBox",
+                "Test Image + Activation Map",
+            ]
+            display_titles += [x + "\n(uncompressed)" for x in display_titles]
+
+            visualize_image_grid(images=display_images, titles=display_titles, ncols=8)
+            plt.tight_layout()
+            plt.show()
+
+            # Display Histograms
+            plt.figure(figsize=(12, 3.5))
+            for k in range(0, 2):
+                plt.subplot(1, 2, k + 1)
+                _, pids = torch.topk(dict_prototype_activations[k][idx], 75)
+                pids = pids.cpu().numpy()
+                plt.bar(
+                    np.arange(0, len(pids)) - 0.2,
+                    dict_prototype_activations[1][idx][pids].cpu().numpy(),
+                    width=0.4,
+                    label="Clean",
+                )
+                plt.bar(
+                    np.arange(0, len(pids)) + 0.2,
+                    dict_prototype_activations[0][idx][pids].cpu().numpy(),
+                    width=0.4,
+                    label="Compressed",
+                )
+                plt.title(
+                    "Top 75 for compressed image"
+                    if k == 0
+                    else "Top 75 for clean image"
+                )
+                plt.ylabel("Similarities")
+                plt.xlabel("Prototype")
+                plt.legend()
             plt.tight_layout()
             plt.show()
 

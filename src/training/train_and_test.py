@@ -3,6 +3,7 @@
 import time
 import torch
 
+from src.utils.adv import fgsm, pgd
 from src.utils.helpers import list_of_distances, make_one_hot
 
 
@@ -14,6 +15,7 @@ def _train_or_test(
     use_l1_mask=True,
     coefs=None,
     log=print,
+    adversarial=False,
 ):
     """
     Train or test.
@@ -21,6 +23,7 @@ def _train_or_test(
         model: the multi-gpu model.
         dataloader: train or test dataloader.
         optimizer: if None, will be test evaluation.
+        adversarial: if True, perform fast FGSM adversarial training or PGD evaluation.
     Returns:
         accuracy of the given model.
     """
@@ -42,6 +45,13 @@ def _train_or_test(
         # torch.enable_grad() has no effect outside of no_grad()
         grad_req = torch.enable_grad() if is_train else torch.no_grad()
         with grad_req:
+            if adversarial:
+                input = (
+                    fgsm(model, input, target)
+                    if is_train
+                    else pgd(model, input, target)
+                )
+
             # nn.Module has implemented __call__() function
             # so no need to call .forward
             output, min_distances = model(input)
@@ -147,7 +157,11 @@ def _train_or_test(
     if class_specific:
         log("\tseparation:\t{0}".format(total_separation_cost / n_batches))
         log("\tavg separation:\t{0}".format(total_avg_separation_cost / n_batches))
-    log("\taccu: \t\t{0}%".format(n_correct / n_examples * 100))
+
+    if adversarial:
+        log("\trob: \t\t{0}%".format(n_correct / n_examples * 100))
+    else:
+        log("\taccu: \t\t{0}%".format(n_correct / n_examples * 100))
     log("\tl1: \t\t{0}".format(model.module.last_layer.weight.norm(p=1).item()))
     p = model.module.prototype_vectors.view(model.module.num_prototypes, -1).cpu()
     with torch.no_grad():
@@ -157,7 +171,15 @@ def _train_or_test(
     return n_correct / n_examples
 
 
-def train(model, dataloader, optimizer, class_specific=False, coefs=None, log=print):
+def train(
+    model,
+    dataloader,
+    optimizer,
+    class_specific=False,
+    coefs=None,
+    log=print,
+    adversarial=False,
+):
     assert optimizer is not None
 
     log("\ttrain")
@@ -169,10 +191,11 @@ def train(model, dataloader, optimizer, class_specific=False, coefs=None, log=pr
         class_specific=class_specific,
         coefs=coefs,
         log=log,
+        adversarial=adversarial,
     )
 
 
-def test(model, dataloader, class_specific=False, log=print):
+def test(model, dataloader, class_specific=False, log=print, adversarial=False):
     log("\ttest")
     model.eval()
     return _train_or_test(
@@ -181,6 +204,7 @@ def test(model, dataloader, class_specific=False, log=print):
         optimizer=None,
         class_specific=class_specific,
         log=log,
+        adversarial=adversarial,
     )
 
 

@@ -6,7 +6,7 @@ import getpass
 
 username = getpass.getuser()
 
-base_architecture = "resnet18"
+base_architecture = "resnet34"
 img_size = 224
 if base_architecture in ["resnet34"]:
     num_channels = 256
@@ -18,7 +18,7 @@ num_classes = 200
 prototype_activation_function = "log"
 add_on_layers_type = "regular"
 
-experiment_run = "005"
+experiment_run = "105"
 
 JPEG_QUALITY = 20
 
@@ -59,8 +59,15 @@ coefs = {
     "l1": 1e-4,
 }
 
-num_train_epochs = 11
+num_train_epochs = 21
 num_warm_epochs = 5
 
 push_start = 10
 push_epochs = [i for i in range(num_train_epochs) if i % 10 == 0]
+
+
+# configuration for adversarial training
+epsilon = 8.0
+alpha = 10.0
+pgd_alpha = 2.0
+pgd_attack_iters = 10
