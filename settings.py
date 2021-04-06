@@ -18,7 +18,11 @@ num_classes = 200
 prototype_activation_function = "log"
 add_on_layers_type = "regular"
 
+<<<<<<< HEAD
 experiment_run = "105"
+=======
+experiment_run = "010"
+>>>>>>> 5c02e325b69b51fbb3bc93d411b18bac68ab63a4
 
 JPEG_QUALITY = 20
 
