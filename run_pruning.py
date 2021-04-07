@@ -118,10 +118,7 @@ log("batch size: {0}".format(train_batch_size))
 train_push_dataset = datasets.ImageFolder(
     train_push_dir,
     transforms.Compose(
-        [
-            transforms.Resize(size=(img_size, img_size)),
-            transforms.ToTensor(),
-        ]
+        [transforms.Resize(size=(img_size, img_size)), transforms.ToTensor(),]
     ),
 )
 train_push_loader = torch.utils.data.DataLoader(

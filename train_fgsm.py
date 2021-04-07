@@ -119,10 +119,7 @@ train_loader = torch.utils.data.DataLoader(
 train_push_dataset = datasets.ImageFolder(
     train_push_dir,
     transforms.Compose(
-        [
-            transforms.Resize(size=(img_size, img_size)),
-            transforms.ToTensor(),
-        ]
+        [transforms.Resize(size=(img_size, img_size)), transforms.ToTensor(),]
     ),
 )
 train_push_loader = torch.utils.data.DataLoader(
@@ -290,7 +287,7 @@ for epoch in range(num_train_epochs):
             save_prototype_class_identity=True,
             log=log,
         )
-        
+
         accu = tnt.test(
             model=ppnet_multi,
             dataloader=test_loader,
@@ -326,7 +323,7 @@ for epoch in range(num_train_epochs):
                     log=log,
                     adversarial=True,
                 )
-                
+
                 accu = tnt.test(
                     model=ppnet_multi,
                     dataloader=test_loader,

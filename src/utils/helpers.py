@@ -106,9 +106,10 @@ def get_all_xy(loc, grid=7):
     xmax, ymax = np.max(xs) + 1, np.max(ys) + 1
     xmin, ymin = max(xmin, 0), max(ymin, 0)
     xmax, ymax = min(xmax, grid), min(ymax, grid)
-    return [ymin, ymax, xmin, xmax], [
-        yx for yx in itertools.product(np.arange(ymin, ymax), np.arange(xmin, xmax))
-    ]
+    return (
+        [ymin, ymax, xmin, xmax],
+        [yx for yx in itertools.product(np.arange(ymin, ymax), np.arange(xmin, xmax))],
+    )
 
 
 def get_image_patch_position(loc, img_size, grid=7):
