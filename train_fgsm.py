@@ -290,7 +290,7 @@ for epoch in range(num_train_epochs):
             save_prototype_class_identity=True,
             log=log,
         )
-        
+
         accu = tnt.test(
             model=ppnet_multi,
             dataloader=test_loader,
@@ -326,7 +326,7 @@ for epoch in range(num_train_epochs):
                     log=log,
                     adversarial=True,
                 )
-                
+
                 accu = tnt.test(
                     model=ppnet_multi,
                     dataloader=test_loader,

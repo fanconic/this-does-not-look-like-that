@@ -8,6 +8,7 @@ from torch.autograd import Variable
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import pandas as pd
 
 import re
 import os
@@ -160,6 +161,7 @@ class LocalAnalysis(object):
             attack (int): type of attack (1 or 3 or None).
         """
         model_base_architecture = load_model_dir.split("/")[-3]
+        self.model_base_architecture = model_base_architecture
         experiment_run = load_model_dir.split("/")[-2]
 
         self.save_analysis_path = (
@@ -947,6 +949,8 @@ class LocalAnalysis(object):
         idx=0,
         max_prototypes=5,
         top_n=None,
+        save_histogram=False,
+        save_name="histogram",
     ):
         """
         Perform detailed local analysis comparing compressed and uncompressed images.
@@ -1220,7 +1224,7 @@ class LocalAnalysis(object):
             plt.show()
 
             # Display Histograms
-            plt.figure(figsize=(12, 3.5))
+            f = plt.figure(figsize=(12, 3.5))
             for k in range(0, 2):
                 plt.subplot(1, 2, k + 1)
                 _, pids = torch.topk(dict_prototype_activations[k][idx], 75)
@@ -1247,5 +1251,7 @@ class LocalAnalysis(object):
                 plt.legend()
             plt.tight_layout()
             plt.show()
+            if save_histogram:
+                f.savefig("{}.pdf".format(save_name), bbox_inches="tight")
 
         return display_images
