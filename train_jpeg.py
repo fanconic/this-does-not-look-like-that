@@ -140,10 +140,7 @@ train_loader = torch.utils.data.DataLoader(
 train_push_dataset = CustomImageFolder(
     train_push_dir,
     transform=transforms.Compose(
-        [
-            transforms.Resize(size=(img_size, img_size)),
-            transforms.ToTensor(),
-        ]
+        [transforms.Resize(size=(img_size, img_size)), transforms.ToTensor(),]
     ),
     target_specific_transform=transforms.Compose([transforms.Lambda(JPEGcompression)]),
 )
