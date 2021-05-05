@@ -1,5 +1,4 @@
-# *This Looks Like That... Does it? 
-# *Shortcomings of Latent Space Prototype Explainability in Deep Networks
+# *This Looks Like That... Does it?* - Shortcomings of Latent Space Prototype Explainability in Deep Networks
 
 Group Project for the "Deep Learning" Lecture in Fall 2020 at ETH Zürich.
 
