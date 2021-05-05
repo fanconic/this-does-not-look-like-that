@@ -11,7 +11,7 @@ from src.utils.helpers import find_high_activation_crop, get_all_xy
 
 
 def similarity_score(
-    ppnet_multi, ppnet, preprocess_fn, x, pid=1, loc=None, act_loc=None
+    ppnet_multi, ppnet, preprocess_fn, x, pid=1, loc=None, act_loc=None, grid=7
 ):
     """
     Forward propagate through ProtoPNet and return the required objective function to maximize.
@@ -95,7 +95,7 @@ def pgd(
         )
 
     sim_score, _, _, prototype_activation_patterns = similarity_score(
-        net_multi, net, preprocess_fn, x, pid, loc=loc
+        net_multi, net, preprocess_fn, x, pid, loc=loc, grid=grid
     )
     activation_pattern = prototype_activation_patterns[pid].detach().cpu().numpy()
     upsampled_activation_pattern = cv2.resize(
@@ -115,7 +115,7 @@ def pgd(
 
         net_multi.zero_grad()
         sim_score, _, _, _ = similarity_score(
-            net_multi, net, preprocess_fn, x_adv, pid, loc=loc, act_loc=act_loc
+            net_multi, net, preprocess_fn, x_adv, pid, loc=loc, act_loc=act_loc, grid=grid
         )
 
         loss = -sim_score
@@ -133,6 +133,6 @@ def pgd(
 
     r_adv = x_adv - x
     sim_score, _, _, _ = similarity_score(
-        net_multi, net, preprocess_fn, x_adv, pid, loc
+        net_multi, net, preprocess_fn, x_adv, pid, loc, grid=grid
     )
     return x_adv, r_adv, sim_score.item()
