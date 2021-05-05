@@ -43,7 +43,7 @@ def similarity_score(
         act_loc = [
             yx
             for yx in itertools.product(
-                np.arange(act_loc[0], act_loc[1]), np.arange(act_loc[2], act_loc[3])
+                np.arange(act_loc[0], min(act_loc[1]+1, grid)), np.arange(act_loc[2], min(act_loc[3]+1, grid))
             )
         ]
         act_sim = torch.zeros(len(act_loc)).cuda()
