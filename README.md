@@ -1,6 +1,8 @@
-# *This Looks Like That... Does it?* - Shortcomings of Latent Space Prototype Explainability in Deep Networks
+# This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks
 
-Group Project for the "Deep Learning" Lecture in Fall 2020 at ETH Zürich.
+This repository contains code for reproducing experiments and models from the paper "[This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks](https://arxiv.org/abs/2105.02968)" by Adrian Hoffmann*, Claudio Fanconi*, Rahul Rade* and Jonas Kohler.
+
+.
 
 Head-On-Stomach Experiment            | JPEG Experiment
 :-------------------------:|:-------------------------:
@@ -34,6 +36,9 @@ Download the CUB-200-2011 dataset from http://www.vision.caltech.edu/visipedia/C
 - `local_analysis_attack1.ipynb`: Head-On-Stomach Experiment.
 - `JPEG_experiment_analysis`: JPEG Experiment.
 - `local_analysis_attack3.ipynb`: Attack 2 (Make head disappear).
+- `adv_training_attack1.ipynb`: Head-On-Stomach Experiment Success Rate.
+- `run_fgsm_training.sh `: Remedy for Head-On-Stomach Experiment (Train ProtoPNet on CUB-200-2011 dataset via fast FGSM training).
+- `run_jpeg_shuffled.sh `: Remedy for JPEG Experiment (Train ProtoPNet on CUB-200-2011 dataset with JPEG augmentation).
 
 ### Source Code Directory Tree
 ```
@@ -78,9 +83,23 @@ Finally, follow the instructions in the provided notebooks to reproduce our expe
 
 
 ## Contributors
-- Adrian Hoffmann - adriahof@student.ethz.ch
-- Claudio Fanconi - fanconic@student.ethz.ch
-- Rahul Rade - rarade@student.ethz.ch
+- Adrian Hoffmann - adriahof@ethz.ch
+- Claudio Fanconi - fanconic@ethz.ch
+- Rahul Rade - rarade@thz.ch
+
+
+## Reference
+
+```
+@misc{hoffmann2021looks,
+  title={This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks}, 
+  author={Adrian Hoffmann and Claudio Fanconi and Rahul Rade and Jonas Kohler},
+  year={2021},
+  eprint={2105.02968},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+```
 
 ## Acknowledgement
 
