@@ -2,7 +2,6 @@
 
 This repository contains code for reproducing experiments and models from the paper "[This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks](https://arxiv.org/abs/2105.02968)" by Adrian Hoffmann*, Claudio Fanconi*, Rahul Rade* and Jonas Kohler.
 
-.
 
 Head-On-Stomach Experiment            | JPEG Experiment
 :-------------------------:|:-------------------------:
