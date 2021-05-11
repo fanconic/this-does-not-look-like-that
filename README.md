@@ -64,12 +64,6 @@ Training ProtoPNets used in the JPEG experiment.
 $ ./run_jpeg_training.sh
 ```
 
-To submit the job to ETH Leonhard cluster, run the following command with suitable arguments.
-
-```
-$ bsub -n 4 -W HH:MM -N -R "rusage[mem=8192, ngpus_excl_p=1]" -R "select[gpu_mtotal0>=10240]" ./run_training.sh
-```
-
 ## Reproducing Results of Our Experiments
 
 To recreate the results of the experiments, you can use the provided Jupyter Notebooks.
