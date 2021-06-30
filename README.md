@@ -1,6 +1,8 @@
 # This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks
 
-This repository contains code for reproducing experiments and models from the paper "[This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks](https://arxiv.org/abs/2105.02968)" by Adrian Hoffmann\*, Claudio Fanconi\*, Rahul Rade\* and Jonas Kohler. A short version of the paper has been accepted at the [ICML 2021 Workshop on Theoretic Foundation, Criticism, and Application Trend of Explainable AI](https://icml2021-xai.github.io/).
+This repository contains code for reproducing experiments and models from the paper "[This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks](https://arxiv.org/abs/2105.02968)" by Adrian Hoffmann\*, Claudio Fanconi\*, Rahul Rade\* and Jonas Kohler. 
+
+A short version of the paper has been accepted at the [ICML 2021 Workshop on Theoretic Foundation, Criticism, and Application Trend of Explainable AI](https://icml2021-xai.github.io/).
 
 
 Head-On-Stomach Experiment            | JPEG Experiment
