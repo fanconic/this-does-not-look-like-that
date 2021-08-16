@@ -80,7 +80,7 @@ Finally, follow the instructions in the provided notebooks to reproduce our expe
 ## Contributors
 - Adrian Hoffmann - adriahof@ethz.ch
 - Claudio Fanconi - fanconic@ethz.ch
-- Rahul Rade - rarade@thz.ch
+- Rahul Rade - rarade@ethz.ch
 
 
 ## Reference
