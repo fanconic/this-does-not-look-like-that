@@ -87,10 +87,10 @@ Finally, follow the instructions in the provided notebooks to reproduce our expe
 
 ```
 @misc{hoffmann2021looks,
-  title={This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks}, 
-  author={Adrian Hoffmann and Claudio Fanconi and Rahul Rade and Jonas Kohler},
-  year={2021},
-  booktitle={ICML 2021 Workshop on Theoretic Foundation, Criticism, and Application Trend of Explainable AI},
+    title={This Looks Like That... Does it? Shortcomings of Latent Space Prototype Interpretability in Deep Networks}, 
+    author={Adrian Hoffmann and Claudio Fanconi and Rahul Rade and Jonas Kohler},
+    year={2021},
+    booktitle={ICML 2021 Workshop on Theoretic Foundation, Criticism, and Application Trend of Explainable AI},
 }
 ```
 
