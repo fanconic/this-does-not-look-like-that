@@ -70,7 +70,7 @@ $ ./run_jpeg_training.sh
 To recreate the results of the experiments, you can use the provided Jupyter Notebooks.
 
 Download the pretrained model weights of both experiments from here:
-https://polybox.ethz.ch/index.php/s/9IuQipiluxPMg1z?path=%2FPPNet
+[Google Drive](https://drive.google.com/drive/folders/1S4U2H9vP1o-XXC48hlHP-z--pJtgn7fY?usp=sharing)
 
 Finally, follow the instructions in the provided notebooks to reproduce our experiments.
 - [`local_analysis_attack1.ipynb`](local_analysis_attack1.ipynb): Head-On-Stomach Experiment.
