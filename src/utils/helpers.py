@@ -65,7 +65,7 @@ def visualize_image_grid(preprocess_fn=None, images=None, titles=None, ncols=3):
     N = np.ceil(len(images) / ncols)
     plt.figure(figsize=(3 * ncols, 3 * N))
     for i, image in enumerate(images):
-        plt.subplot(N, ncols, i + 1)
+        plt.subplot(N, ncols, i + 1).astype(int)
         if preprocess_fn:
             plt.imshow(preprocess_fn(image))
         else:
