@@ -62,10 +62,10 @@ def find_high_activation_crop(activation_map, percentile=95):
 def visualize_image_grid(preprocess_fn=None, images=None, titles=None, ncols=3):
     if titles:
         assert len(titles) == ncols
-    N = np.ceil(len(images) / ncols)
+    N = np.ceil(len(images) / ncols).astype(int)
     plt.figure(figsize=(3 * ncols, 3 * N))
     for i, image in enumerate(images):
-        plt.subplot(N, ncols, i + 1).astype(int)
+        plt.subplot(N, ncols, i + 1)
         if preprocess_fn:
             plt.imshow(preprocess_fn(image))
         else:
