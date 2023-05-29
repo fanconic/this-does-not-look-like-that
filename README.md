@@ -28,7 +28,7 @@ $ conda install --file requirements.txt
 
 ### Dataset
 
-Download the CUB-200-2011 dataset from http://www.vision.caltech.edu/visipedia/CUB-200-2011.html and extract the files in a suitable folder.
+Download the CUB-200-2011 dataset from http://www.vision.caltech.edu/datasets/cub_200_2011/ and extract the files in a suitable folder.
 
 ### Repository Structure
 
